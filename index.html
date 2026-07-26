@@ -11,7 +11,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -20,55 +20,56 @@
             overflow-x: hidden;
         }
         
-        /* 21st.dev Grid Background */
+        /* 21st.dev / Vercel style Premium Dot Grid Background */
         .bg-grid {
             position: fixed;
             inset: 0;
-            background-size: 50px 50px;
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 24px 24px;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
             z-index: -2;
         }
 
-        /* 21st.dev Aurora/Glow effects */
+        /* Enhanced Ambient Glow Effects for High Contrast Depth */
         .bg-glow-1 {
             position: fixed;
-            top: -10%;
-            left: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
-            filter: blur(80px);
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.16) 0%, transparent 65%);
+            filter: blur(120px);
             z-index: -1;
             pointer-events: none;
         }
         .bg-glow-2 {
             position: fixed;
-            bottom: 10%;
+            bottom: -10%;
             right: -10%;
-            width: 45vw;
-            height: 45vw;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%);
-            filter: blur(80px);
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+            filter: blur(100px);
             z-index: -1;
             pointer-events: none;
         }
 
-        /* Glassmorphism Cards */
+        /* Glassmorphism Cards with increased contrast (lighter darks & solid borders) */
         .glass-card {
-            background: rgba(10, 10, 20, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(17, 17, 28, 0.75); /* Made lighter to stand out from black background */
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.09); /* Brighter border */
+            box-shadow: 
+                0 10px 40px -10px rgba(0, 0, 0, 0.7),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05); /* Top inner highlights */
         }
 
-        /* Staggered entrance animations */
+        /* Entrance fade up animations */
         @keyframes fadeUp {
             from {
                 opacity: 0;
-                transform: translateY(24px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -79,32 +80,35 @@
             opacity: 0;
             animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.4s; }
-        .delay-5 { animation-delay: 0.5s; }
-        .delay-6 { animation-delay: 0.6s; }
-        .delay-7 { animation-delay: 0.7s; }
-        .delay-8 { animation-delay: 0.8s; }
+        .delay-1 { animation-delay: 0.08s; }
+        .delay-2 { animation-delay: 0.16s; }
+        .delay-3 { animation-delay: 0.24s; }
+        .delay-4 { animation-delay: 0.32s; }
+        .delay-5 { animation-delay: 0.4s; }
+        .delay-6 { animation-delay: 0.48s; }
+        .delay-7 { animation-delay: 0.56s; }
+        .delay-8 { animation-delay: 0.64s; }
 
-        /* Card Spotlight Effect (21st.dev style) */
+        /* Card Spotlight Interactive Glow (Follows mouse) */
         .spotlight-card {
             position: relative;
             overflow: hidden;
-            transition: border-color 0.3s, transform 0.2s;
+            transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
         }
         .spotlight-card:hover {
             transform: translateY(-2px);
-            border-color: rgba(99, 102, 241, 0.3);
+            border-color: rgba(99, 102, 241, 0.45);
+            box-shadow: 
+                0 15px 40px -5px rgba(0, 0, 0, 0.8),
+                0 0 20px rgba(99, 102, 241, 0.15);
         }
         .spotlight-card::before {
             content: '';
             position: absolute;
             inset: 0;
             background: radial-gradient(
-                350px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-                rgba(255, 255, 255, 0.06),
+                300px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+                rgba(255, 255, 255, 0.08),
                 transparent 80%
             );
             z-index: 1;
@@ -116,13 +120,14 @@
             opacity: 1;
         }
 
-        /* Border Beam (Animated Glowing Border - Magic UI style) */
+        /* Border Beam (Animated Conic Border - Magic UI style) */
         .border-beam-card {
             position: relative;
             border-radius: 1.5rem;
             overflow: hidden;
             padding: 1px; /* border size */
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.7);
         }
         .border-beam-card::before {
             content: '';
@@ -135,28 +140,29 @@
                 from 0deg,
                 transparent 0deg,
                 transparent 120deg,
-                #6366f1 180deg,
-                #a855f7 240deg,
+                #818cf8 180deg,  /* Brighter indigo */
+                #c084fc 240deg,  /* Brighter purple */
                 transparent 300deg,
                 transparent 360deg
             );
-            animation: rotateBeam 6s linear infinite;
+            animation: rotateBeam 4s linear infinite; /* Faster rotation */
             z-index: 0;
         }
         .border-beam-inner {
             position: relative;
-            background: rgba(8, 8, 16, 0.95);
+            background: rgba(15, 15, 26, 0.95);
             border-radius: calc(1.5rem - 1px);
             z-index: 1;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
         @keyframes rotateBeam {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* Animated gradient text */
+        /* Text Shine (Smooth Gradient Text) */
         .gradient-text {
-            background: linear-gradient(to right, #ffffff, #a855f7, #6366f1, #ffffff);
+            background: linear-gradient(to right, #ffffff, #c084fc, #818cf8, #ffffff);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -167,7 +173,7 @@
             100% { background-position: 200% center; }
         }
 
-        /* Rotating Profile Avatar Ring */
+        /* Slow Spinning Profile Ring */
         .avatar-ring {
             position: relative;
             width: 104px;
@@ -176,7 +182,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(0deg, #6366f1, #a855f7);
+            background: linear-gradient(0deg, #818cf8, #c084fc);
             animation: spinRing 6s linear infinite;
         }
         @keyframes spinRing {
@@ -188,7 +194,7 @@
             animation: pulseEmerald 2s infinite;
         }
         @keyframes pulseEmerald {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
             70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
             100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
@@ -203,41 +209,41 @@
 
     <div class="max-w-md mx-auto space-y-6">
         
-        <!-- Profile Section (with Border Beam Effect) -->
+        <!-- Profile Section -->
         <div class="border-beam-card animate-fade-up delay-1">
             <div class="border-beam-inner p-6 text-center flex flex-col items-center space-y-4">
                 <div class="relative group mt-2">
                     <!-- Spinning gradient ring behind avatar -->
                     <div class="avatar-ring"></div>
-                    <!-- Actual Avatar Container (keeps it static) -->
-                    <div class="absolute inset-[4px] rounded-full bg-slate-950 flex items-center justify-center overflow-hidden">
+                    <!-- Avatar Container -->
+                    <div class="absolute inset-[4px] rounded-full bg-[#0a0a14] flex items-center justify-center overflow-hidden border border-white/5">
                         <i class="fa-solid fa-user text-4xl text-indigo-400"></i>
                     </div>
                     <!-- Online Dot Status -->
-                    <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-950 rounded-full pulse-emerald"></span>
+                    <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-[#030014] rounded-full pulse-emerald"></span>
                 </div>
                 
-                <div class="space-y-1 pt-1">
+                <div class="space-y-1.5 pt-1">
                     <h1 class="text-3xl font-extrabold tracking-tight gradient-text flex items-center justify-center gap-2">
                         Jilin
-                        <i class="fa-solid fa-circle-check text-indigo-400 text-lg" title="Verified Account"></i>
+                        <i class="fa-solid fa-circle-check text-blue-400 text-xl" title="Verified Account"></i>
                     </h1>
-                    <p class="text-sm text-indigo-300 font-semibold tracking-wide">DIGITAL CREATOR & DEVELOPER</p>
-                    <p class="text-xs text-slate-400 max-w-xs mx-auto mt-2 leading-relaxed">
+                    <p class="text-xs text-indigo-400 font-extrabold tracking-widest uppercase">DIGITAL CREATOR & DEVELOPER</p>
+                    <p class="text-sm text-slate-400 max-w-xs mx-auto mt-2 leading-relaxed font-medium">
                         Crafting fluid web experiences and clean code architectures. Inspired by modular components and future aesthetics.
                     </p>
                 </div>
 
-                <!-- Contacts Section -->
+                <!-- Contacts Section (High Contrast Colored Buttons) -->
                 <div class="flex items-center justify-center gap-3 pt-2 w-full">
-                    <a href="https://wa.me/6281234567890" target="_blank" class="w-10 h-10 rounded-full bg-emerald-950/20 border border-emerald-500/20 hover:border-emerald-500 hover:bg-emerald-500/10 flex items-center justify-center text-emerald-400 transition-all duration-300" title="WhatsApp">
-                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <a href="https://wa.me/6281234567890" target="_blank" class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 hover:border-emerald-400 hover:bg-emerald-500/20 hover:scale-105 flex items-center justify-center text-emerald-400 transition-all duration-300 shadow-lg shadow-emerald-950/20" title="WhatsApp">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
                     </a>
-                    <a href="mailto:jilin@example.com" class="w-10 h-10 rounded-full bg-blue-950/20 border border-blue-500/20 hover:border-blue-500 hover:bg-blue-500/10 flex items-center justify-center text-blue-400 transition-all duration-300" title="Email">
-                        <i class="fa-regular fa-envelope text-lg"></i>
+                    <a href="mailto:jilin@example.com" class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 hover:border-blue-400 hover:bg-blue-500/20 hover:scale-105 flex items-center justify-center text-blue-400 transition-all duration-300 shadow-lg shadow-blue-950/20" title="Email">
+                        <i class="fa-regular fa-envelope text-xl"></i>
                     </a>
-                    <a href="https://github.com" target="_blank" class="w-10 h-10 rounded-full bg-slate-900/40 border border-slate-700/30 hover:border-slate-500 hover:bg-slate-700/10 flex items-center justify-center text-slate-300 transition-all duration-300" title="GitHub">
-                        <i class="fa-brands fa-github text-lg"></i>
+                    <a href="https://github.com" target="_blank" class="w-12 h-12 rounded-xl bg-slate-500/10 border border-slate-500/30 hover:border-slate-400 hover:bg-slate-500/20 hover:scale-105 flex items-center justify-center text-slate-300 transition-all duration-300 shadow-lg shadow-slate-950/20" title="GitHub">
+                        <i class="fa-brands fa-github text-xl"></i>
                     </a>
                 </div>
             </div>
@@ -245,66 +251,66 @@
 
         <!-- About Me Section -->
         <div class="glass-card spotlight-card rounded-2xl p-5 space-y-3 animate-fade-up delay-2">
-            <h2 class="text-xs font-bold tracking-widest text-indigo-400 uppercase flex items-center gap-2">
+            <h2 class="text-xs font-extrabold tracking-widest text-indigo-400 uppercase flex items-center gap-2">
                 <i class="fa-solid fa-sparkles text-xs"></i> About Me
             </h2>
-            <p class="text-sm text-slate-300 leading-relaxed">
-                Hi, I'm <strong>Jilin</strong>. I write interactive applications, deploy serverless logic, and build polished user interfaces. Inspired by communities like <span class="text-indigo-400 font-medium hover:underline">21st.dev</span> to blend design with interactive components.
+            <p class="text-sm text-slate-300 leading-relaxed font-medium">
+                Hi, I'm <strong class="text-white font-bold">Jilin</strong>. I write interactive applications, deploy serverless logic, and build polished user interfaces. Inspired by communities like <span class="text-indigo-400 font-bold hover:underline">21st.dev</span> to blend design with interactive components.
             </p>
         </div>
 
         <!-- Links Container -->
         <div class="space-y-3">
-            <h2 class="text-xs font-bold tracking-widest text-slate-400 uppercase px-2 flex items-center gap-2 animate-fade-up delay-3">
+            <h2 class="text-xs font-extrabold tracking-widest text-slate-400 uppercase px-2 flex items-center gap-2 animate-fade-up delay-3">
                 <i class="fa-solid fa-link text-indigo-400 text-xs"></i> Connect
             </h2>
 
             <!-- Link 1 -->
             <a href="https://github.com/mhsajiuk" target="_blank" class="glass-card spotlight-card rounded-2xl p-4 flex items-center justify-between group animate-fade-up delay-4">
                 <div class="flex items-center gap-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-slate-900/60 flex items-center justify-center border border-slate-800 text-indigo-400 group-hover:text-indigo-300 transition-colors">
+                    <div class="w-11 h-11 rounded-xl bg-slate-900/80 flex items-center justify-center border border-slate-800 text-indigo-400 group-hover:text-indigo-300 transition-colors">
                         <i class="fa-brands fa-github text-xl"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-semibold text-white">GitHub</h3>
-                        <p class="text-xs text-slate-400">Explore open source codes & works</p>
+                        <h3 class="text-sm font-bold text-white">GitHub</h3>
+                        <p class="text-xs text-slate-400 font-medium">Explore open source codes & works</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-arrow-up-right text-xs text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
+                <i class="fa-solid fa-arrow-up-right text-xs text-slate-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
             </a>
 
             <!-- Link 2 -->
             <a href="https://instagram.com" target="_blank" class="glass-card spotlight-card rounded-2xl p-4 flex items-center justify-between group animate-fade-up delay-5">
                 <div class="flex items-center gap-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-slate-900/60 flex items-center justify-center border border-slate-800 text-indigo-400 group-hover:text-indigo-300 transition-colors">
+                    <div class="w-11 h-11 rounded-xl bg-slate-900/80 flex items-center justify-center border border-slate-800 text-indigo-400 group-hover:text-indigo-300 transition-colors">
                         <i class="fa-brands fa-instagram text-xl"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-semibold text-white">Instagram</h3>
-                        <p class="text-xs text-slate-400">Visual feeds, logs and activities</p>
+                        <h3 class="text-sm font-bold text-white">Instagram</h3>
+                        <p class="text-xs text-slate-400 font-medium">Visual feeds, logs and activities</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-arrow-up-right text-xs text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
+                <i class="fa-solid fa-arrow-up-right text-xs text-slate-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
             </a>
 
             <!-- Link 3 -->
             <a href="https://linkedin.com" target="_blank" class="glass-card spotlight-card rounded-2xl p-4 flex items-center justify-between group animate-fade-up delay-6">
                 <div class="flex items-center gap-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-slate-900/60 flex items-center justify-center border border-slate-800 text-indigo-400 group-hover:text-indigo-300 transition-colors">
+                    <div class="w-11 h-11 rounded-xl bg-slate-900/80 flex items-center justify-center border border-slate-800 text-indigo-400 group-hover:text-indigo-300 transition-colors">
                         <i class="fa-brands fa-linkedin-in text-xl"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-semibold text-white">LinkedIn</h3>
-                        <p class="text-xs text-slate-400">Professional network and resume</p>
+                        <h3 class="text-sm font-bold text-white">LinkedIn</h3>
+                        <p class="text-xs text-slate-400 font-medium">Professional network and resume</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-arrow-up-right text-xs text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
+                <i class="fa-solid fa-arrow-up-right text-xs text-slate-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
             </a>
         </div>
 
         <!-- YouTube Section -->
         <div class="glass-card spotlight-card rounded-2xl p-5 space-y-4 animate-fade-up delay-7">
-            <h2 class="text-xs font-bold tracking-widest text-slate-400 uppercase flex items-center gap-2">
+            <h2 class="text-xs font-extrabold tracking-widest text-slate-400 uppercase flex items-center gap-2">
                 <i class="fa-brands fa-youtube text-red-500"></i> Featured Video
             </h2>
             <div class="aspect-video w-full rounded-xl overflow-hidden border border-slate-800">
@@ -314,7 +320,7 @@
 
         <!-- Spotify Section -->
         <div class="glass-card spotlight-card rounded-2xl p-5 space-y-4 animate-fade-up delay-8">
-            <h2 class="text-xs font-bold tracking-widest text-slate-400 uppercase flex items-center gap-2">
+            <h2 class="text-xs font-extrabold tracking-widest text-slate-400 uppercase flex items-center gap-2">
                 <i class="fa-brands fa-spotify text-emerald-500"></i> On Repeat
             </h2>
             <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4PTG3Z6ehGkBF3zI7YmR6G?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
