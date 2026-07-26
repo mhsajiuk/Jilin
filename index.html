@@ -19,13 +19,16 @@
             min-height: 100vh;
         }
 
-        /* Nav Menu Highlight */
-        .tab-active {
+        /* Nav Menu Highlight Style */
+        .tab-button {
+            position: relative;
+            transition: color 0.25s ease;
+        }
+        .tab-button.active {
             color: #0F172A;
             font-weight: 700;
-            position: relative;
         }
-        .tab-active::after {
+        .tab-button.active::after {
             content: '';
             position: absolute;
             bottom: -4px;
@@ -58,11 +61,29 @@
             box-shadow: 0 12px 24px -10px rgba(15, 23, 42, 0.1);
         }
 
-        /* Spotlight-like clean animations */
+        /* Freebies Grid Card hover effect */
+        .freebies-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .freebies-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px -10px rgba(15, 23, 42, 0.15);
+            border-color: #0F172A;
+        }
+
+        /* Screen transitions */
+        .view-section {
+            display: none;
+        }
+        .view-section.active {
+            display: block;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(16px);
+                transform: translateY(12px);
             }
             to {
                 opacity: 1;
@@ -73,11 +94,6 @@
             opacity: 0;
             animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        .delay-1 { animation-delay: 0.05s; }
-        .delay-2 { animation-delay: 0.1s; }
-        .delay-3 { animation-delay: 0.15s; }
-        .delay-4 { animation-delay: 0.2s; }
-        .delay-5 { animation-delay: 0.25s; }
     </style>
 </head>
 <body class="text-[#334155] antialiased selection:bg-[#0F172A] selection:text-white pb-16">
@@ -99,17 +115,16 @@
     <!-- Content Container -->
     <main class="w-full max-w-md mx-auto px-4 mt-8 space-y-6">
 
-        <!-- Tabs Navigation -->
-        <div class="flex items-center justify-center gap-8 border-b border-slate-200/50 pb-2 animate-fade-in delay-1">
-            <button class="text-sm font-semibold text-[#0F172A] tab-active">ABOUT</button>
-            <a href="https://github.com/mhsajiuk?tab=repositories" target="_blank" class="text-sm font-semibold text-slate-400 hover:text-slate-600 transition-colors">PROJECTS</a>
-            <a href="https://i.pinimg.com/originals/ea/6e/00/ea6e0069abf7777c75f59fbd2714528a.jpg" target="_blank" class="text-sm font-semibold text-slate-400 hover:text-slate-600 transition-colors">GALLERY</a>
+        <!-- Tabs Navigation (Figma-like Tab System) -->
+        <div class="flex items-center justify-center gap-8 border-b border-slate-200/50 pb-2 animate-fade-in">
+            <button onclick="switchTab('about')" id="tab-about" class="tab-button text-sm font-semibold text-slate-400 active">ABOUT</button>
+            <button onclick="switchTab('freebies')" id="tab-freebies" class="tab-button text-sm font-semibold text-slate-400">FREEBIES</button>
         </div>
 
-        <!-- Section 1: Profile & About Wrap -->
-        <div class="space-y-4 animate-fade-in delay-2">
+        <!-- ================= ABOUT VIEW ================= -->
+        <div id="view-about" class="view-section active space-y-6">
             
-            <!-- Mint Green Profile Card -->
+            <!-- Profile Card -->
             <div class="profile-card rounded-3xl p-6 flex flex-col items-center justify-center text-center premium-shadow">
                 <div class="relative w-28 h-28 rounded-full border-4 border-white overflow-hidden shadow-md">
                     <!-- Pinterest Avatar image -->
@@ -152,77 +167,141 @@
                 </div>
             </div>
 
+            <!-- Connect / Contact Lists -->
+            <div class="space-y-3">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest px-2">Featured Contents</h3>
+
+                <!-- Link Card 1 -->
+                <a href="https://github.com/mhsajiuk" target="_blank" class="link-card bg-white border border-slate-200/80 rounded-2xl p-4 flex items-center justify-between premium-shadow group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-[#F0FEFA] border border-emerald-100 flex items-center justify-center text-indigo-600">
+                            <i class="fa-solid fa-users text-sm"></i>
+                        </div>
+                        <span class="text-sm font-bold text-[#0F172A]">JOIN GROUP BARUDAK FIGMA ⚡</span>
+                    </div>
+                    <div class="w-7 h-7 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-[#0F172A] group-hover:border-[#0F172A] transition-colors">
+                        <i class="fa-solid fa-arrow-up-right text-2xs"></i>
+                    </div>
+                </a>
+
+                <!-- Link Card 2 -->
+                <a href="#" class="link-card bg-white border border-slate-200/80 rounded-2xl p-4 flex items-center justify-between premium-shadow group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-[#F0FEFA] border border-emerald-100 flex items-center justify-center text-indigo-600">
+                            <i class="fa-solid fa-book-open text-sm"></i>
+                        </div>
+                        <span class="text-sm font-bold text-[#0F172A]">FILE DOCS BELAJAR VARIABLES</span>
+                    </div>
+                    <div class="w-7 h-7 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-[#0F172A] group-hover:border-[#0F172A] transition-colors">
+                        <i class="fa-solid fa-arrow-up-right text-2xs"></i>
+                    </div>
+                </a>
+
+                <!-- Link Card 3 -->
+                <a href="#" class="link-card bg-white border border-slate-200/80 rounded-2xl p-4 flex items-center justify-between premium-shadow group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-[#F0FEFA] border border-emerald-100 flex items-center justify-center text-indigo-600">
+                            <i class="fa-solid fa-folder-open text-sm"></i>
+                        </div>
+                        <span class="text-sm font-bold text-[#0F172A]">MOKNOT: RATUSAN RESOURCES UIUX</span>
+                    </div>
+                    <div class="w-7 h-7 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-[#0F172A] group-hover:border-[#0F172A] transition-colors">
+                        <i class="fa-solid fa-arrow-up-right text-2xs"></i>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Integrations (Spotify & YouTube) -->
+            <div class="space-y-4">
+                <div class="bg-white rounded-3xl p-5 border border-slate-200/60 premium-shadow space-y-3">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                        <i class="fa-brands fa-spotify text-emerald-500"></i> Currently On Repeat
+                    </h4>
+                    <iframe style="border-radius:16px" src="https://open.spotify.com/embed/track/4qW3BbQAwZsrnu8a3ZRdyT?utm_source=generator&theme=1" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                </div>
+
+                <div class="bg-white rounded-3xl p-5 border border-slate-200/60 premium-shadow space-y-3">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                        <i class="fa-brands fa-youtube text-red-500"></i> Featured Video
+                    </h4>
+                    <div class="aspect-video w-full rounded-2xl overflow-hidden border border-slate-100">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- Section 2: Link Cards Container -->
-        <div class="space-y-3 animate-fade-in delay-3">
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest px-2">Featured Contents</h3>
-
-            <!-- Link Card 1 -->
-            <a href="https://github.com/mhsajiuk" target="_blank" class="link-card bg-white border border-slate-200/80 rounded-2xl p-4 flex items-center justify-between premium-shadow group">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-[#F0FEFA] border border-emerald-100 flex items-center justify-center text-indigo-600">
-                        <i class="fa-solid fa-users text-sm"></i>
-                    </div>
-                    <span class="text-sm font-bold text-[#0F172A]">JOIN GROUP BARUDAK FIGMA ⚡</span>
-                </div>
-                <div class="w-7 h-7 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-[#0F172A] group-hover:border-[#0F172A] transition-colors">
-                    <i class="fa-solid fa-arrow-up-right text-2xs"></i>
-                </div>
-            </a>
-
-            <!-- Link Card 2 -->
-            <a href="#" class="link-card bg-white border border-slate-200/80 rounded-2xl p-4 flex items-center justify-between premium-shadow group">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-[#F0FEFA] border border-emerald-100 flex items-center justify-center text-indigo-600">
-                        <i class="fa-solid fa-book-open text-sm"></i>
-                    </div>
-                    <span class="text-sm font-bold text-[#0F172A]">FILE DOCS BELAJAR VARIABLES</span>
-                </div>
-                <div class="w-7 h-7 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-[#0F172A] group-hover:border-[#0F172A] transition-colors">
-                    <i class="fa-solid fa-arrow-up-right text-2xs"></i>
-                </div>
-            </a>
-
-            <!-- Link Card 3 -->
-            <a href="#" class="link-card bg-white border border-slate-200/80 rounded-2xl p-4 flex items-center justify-between premium-shadow group">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-[#F0FEFA] border border-emerald-100 flex items-center justify-center text-indigo-600">
-                        <i class="fa-solid fa-folder-open text-sm"></i>
-                    </div>
-                    <span class="text-sm font-bold text-[#0F172A]">MOKNOT: RATUSAN RESOURCES UIUX</span>
-                </div>
-                <div class="w-7 h-7 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-[#0F172A] group-hover:border-[#0F172A] transition-colors">
-                    <i class="fa-solid fa-arrow-up-right text-2xs"></i>
-                </div>
-            </a>
-        </div>
-
-        <!-- Section 3: Integrations & Media (YouTube & Spotify) -->
-        <div class="space-y-4 animate-fade-in delay-4">
+        <!-- ================= FREEBIES / PROJECTS VIEW ================= -->
+        <div id="view-freebies" class="view-section space-y-6">
             
-            <!-- Spotify Widget with light mode styling frame -->
-            <div class="bg-white rounded-3xl p-5 border border-slate-200/60 premium-shadow space-y-3">
-                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                    <i class="fa-brands fa-spotify text-emerald-500"></i> Currently On Repeat
-                </h4>
-                <iframe style="border-radius:16px" src="https://open.spotify.com/embed/track/4qW3BbQAwZsrnu8a3ZRdyT?utm_source=generator&theme=1" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <div class="text-center py-2">
+                <h2 class="text-xl font-extrabold text-[#0F172A] tracking-tight">Freebies & Assets</h2>
+                <p class="text-xs text-slate-400 mt-1">High-quality design files, UI kits, and templates.</p>
             </div>
 
-            <!-- YouTube Video Widget -->
-            <div class="bg-white rounded-3xl p-5 border border-slate-200/60 premium-shadow space-y-3">
-                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                    <i class="fa-brands fa-youtube text-red-500"></i> Featured Video
-                </h4>
-                <div class="aspect-video w-full rounded-2xl overflow-hidden border border-slate-100">
-                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <!-- Freebies Grid Layout (Mirrors the Card.Freebies frame pattern in Figma) -->
+            <div class="grid grid-cols-1 gap-4">
+                
+                <!-- Freebie 1 -->
+                <div class="freebies-card bg-white border border-slate-200/60 rounded-3xl overflow-hidden premium-shadow">
+                    <!-- Image Mockup -->
+                    <div class="aspect-[16/10] bg-indigo-50/50 border-b border-slate-100 flex items-center justify-center p-6 relative group">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500/5 to-purple-500/5"></div>
+                        <i class="fa-solid fa-layer-group text-4xl text-indigo-400 group-hover:scale-110 transition-transform duration-300"></i>
+                    </div>
+                    <!-- Details Frame -->
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xs font-extrabold text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-md uppercase tracking-wider">UI KIT</span>
+                            <span class="text-xs font-black text-emerald-600">FREE</span>
+                        </div>
+                        <h3 class="text-sm font-extrabold text-[#0F172A] leading-snug">MokUI Mobile Design System v1.0</h3>
+                        <p class="text-xs text-slate-400">Complete components library, styles, and variables for iOS & Android.</p>
+                    </div>
                 </div>
-            </div>
 
+                <!-- Freebie 2 -->
+                <div class="freebies-card bg-white border border-slate-200/60 rounded-3xl overflow-hidden premium-shadow">
+                    <!-- Image Mockup -->
+                    <div class="aspect-[16/10] bg-purple-50/50 border-b border-slate-100 flex items-center justify-center p-6 relative group">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-purple-500/5 to-pink-500/5"></div>
+                        <i class="fa-solid fa-palette text-4xl text-purple-400 group-hover:scale-110 transition-transform duration-300"></i>
+                    </div>
+                    <!-- Details Frame -->
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xs font-extrabold text-purple-600 bg-purple-50 border border-purple-100 px-2 py-0.5 rounded-md uppercase tracking-wider">TEMPLATES</span>
+                            <span class="text-xs font-black text-emerald-600">FREE</span>
+                        </div>
+                        <h3 class="text-sm font-extrabold text-[#0F172A] leading-snug">Minimalist Portfolio Framer Template</h3>
+                        <p class="text-xs text-slate-400">Dark mode portfolio website design optimized for fast loading and SEO.</p>
+                    </div>
+                </div>
+
+                <!-- Freebie 3 -->
+                <div class="freebies-card bg-white border border-slate-200/60 rounded-3xl overflow-hidden premium-shadow">
+                    <!-- Image Mockup -->
+                    <div class="aspect-[16/10] bg-blue-50/50 border-b border-slate-100 flex items-center justify-center p-6 relative group">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-blue-500/5 to-cyan-500/5"></div>
+                        <i class="fa-solid fa-icons text-4xl text-blue-400 group-hover:scale-110 transition-transform duration-300"></i>
+                    </div>
+                    <!-- Details Frame -->
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xs font-extrabold text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-md uppercase tracking-wider">ASSETS</span>
+                            <span class="text-xs font-black text-emerald-600">FREE</span>
+                        </div>
+                        <h3 class="text-sm font-extrabold text-[#0F172A] leading-snug">Premium 3D Tech Illustration Pack</h3>
+                        <p class="text-xs text-slate-400">12 high-resolution 3D objects for presentations, websites, and flyers.</p>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
         <!-- Footer -->
-        <footer class="text-center pt-8 text-xs text-slate-400 space-y-1 animate-fade-in delay-5">
+        <footer class="text-center pt-8 text-xs text-slate-400 space-y-1 animate-fade-in">
             <p>&copy; 2026 Jilin. All rights reserved.</p>
             <p class="flex items-center justify-center gap-1">
                 Designed via Figma &bull; Built with Tailwind CSS
@@ -230,6 +309,24 @@
         </footer>
 
     </main>
+
+    <!-- SPA Tab Switcher Script -->
+    <script>
+        function switchTab(tabName) {
+            // Remove active classes
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+
+            // Set active states
+            if (tabName === 'about') {
+                document.getElementById('tab-about').classList.add('active');
+                document.getElementById('view-about').classList.add('active');
+            } else if (tabName === 'freebies') {
+                document.getElementById('tab-freebies').classList.add('active');
+                document.getElementById('view-freebies').classList.add('active');
+            }
+        }
+    </script>
 
 </body>
 </html>
