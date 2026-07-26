@@ -15,158 +15,282 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #020617 100%);
+            background-color: #030014;
             min-height: 100vh;
+            overflow-x: hidden;
         }
+        
+        /* 21st.dev Grid Background */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            z-index: -2;
+        }
+
+        /* 21st.dev Aurora/Glow effects */
+        .bg-glow-1 {
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+            filter: blur(80px);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .bg-glow-2 {
+            position: fixed;
+            bottom: 10%;
+            right: -10%;
+            width: 45vw;
+            height: 45vw;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%);
+            filter: blur(80px);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism Cards */
         .glass-card {
-            background: rgba(30, 41, 59, 0.45);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            background: rgba(10, 10, 20, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
-        .btn-link {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        /* Staggered entrance animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-up {
+            opacity: 0;
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+        .delay-7 { animation-delay: 0.7s; }
+        .delay-8 { animation-delay: 0.8s; }
+
+        /* Card Spotlight Effect (21st.dev style) */
+        .spotlight-card {
             position: relative;
             overflow: hidden;
+            transition: border-color 0.3s, transform 0.2s;
         }
-        .btn-link::after {
+        .spotlight-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        .spotlight-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
-            transition: 0.5s;
+            inset: 0;
+            background: radial-gradient(
+                350px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+                rgba(255, 255, 255, 0.06),
+                transparent 80%
+            );
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
-        .btn-link:hover::after {
-            left: 100%;
+        .spotlight-card:hover::before {
+            opacity: 1;
         }
-        .btn-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(99, 102, 241, 0.4);
-            border-color: rgba(99, 102, 241, 0.5);
-            background: rgba(99, 102, 241, 0.15);
+
+        /* Border Beam (Animated Glowing Border - Magic UI style) */
+        .border-beam-card {
+            position: relative;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            padding: 1px; /* border size */
+            background: rgba(255, 255, 255, 0.05);
         }
-        .pulse-icon {
-            animation: pulse 2s infinite;
+        .border-beam-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                transparent 120deg,
+                #6366f1 180deg,
+                #a855f7 240deg,
+                transparent 300deg,
+                transparent 360deg
+            );
+            animation: rotateBeam 6s linear infinite;
+            z-index: 0;
         }
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
-            }
+        .border-beam-inner {
+            position: relative;
+            background: rgba(8, 8, 16, 0.95);
+            border-radius: calc(1.5rem - 1px);
+            z-index: 1;
         }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
+        @keyframes rotateBeam {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
+
+        /* Animated gradient text */
+        .gradient-text {
+            background: linear-gradient(to right, #ffffff, #a855f7, #6366f1, #ffffff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 4s linear infinite;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 3px;
+        @keyframes textShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
+
+        /* Rotating Profile Avatar Ring */
+        .avatar-ring {
+            position: relative;
+            width: 104px;
+            height: 104px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(0deg, #6366f1, #a855f7);
+            animation: spinRing 6s linear infinite;
+        }
+        @keyframes spinRing {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .pulse-emerald {
+            animation: pulseEmerald 2s infinite;
+        }
+        @keyframes pulseEmerald {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+            70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
     </style>
 </head>
-<body class="text-slate-200 antialiased py-12 px-4 selection:bg-indigo-500 selection:text-white">
+<body class="text-slate-300 antialiased py-12 px-4 selection:bg-indigo-500 selection:text-white">
+
+    <!-- Ambient Grids & Glows -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
 
     <div class="max-w-md mx-auto space-y-6">
         
-        <!-- Profile Section -->
-        <div class="glass-card rounded-3xl p-6 text-center flex flex-col items-center space-y-4">
-            <div class="relative group">
-                <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-500"></div>
-                <!-- Avatar Placeholder -->
-                <div class="relative w-24 h-24 rounded-full bg-slate-800 flex items-center justify-center border-4 border-slate-900 overflow-hidden">
-                    <i class="fa-solid fa-user text-4xl text-indigo-400"></i>
+        <!-- Profile Section (with Border Beam Effect) -->
+        <div class="border-beam-card animate-fade-up delay-1">
+            <div class="border-beam-inner p-6 text-center flex flex-col items-center space-y-4">
+                <div class="relative group mt-2">
+                    <!-- Spinning gradient ring behind avatar -->
+                    <div class="avatar-ring"></div>
+                    <!-- Actual Avatar Container (keeps it static) -->
+                    <div class="absolute inset-[4px] rounded-full bg-slate-950 flex items-center justify-center overflow-hidden">
+                        <i class="fa-solid fa-user text-4xl text-indigo-400"></i>
+                    </div>
+                    <!-- Online Dot Status -->
+                    <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-950 rounded-full pulse-emerald"></span>
                 </div>
-                <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-950 rounded-full pulse-icon"></span>
-            </div>
-            
-            <div class="space-y-1">
-                <h1 class="text-2xl font-bold tracking-tight text-white flex items-center justify-center gap-1.5">
-                    Jilin
-                    <i class="fa-solid fa-circle-check text-indigo-400 text-lg" title="Verified Account"></i>
-                </h1>
-                <p class="text-sm text-indigo-300 font-medium">Digital Creator & Developer</p>
-                <p class="text-xs text-slate-400 max-w-xs mx-auto mt-2">
-                    Creating digital experiences, code architectures, and exploring new frontiers in tech. Stay connected!
-                </p>
-            </div>
+                
+                <div class="space-y-1 pt-1">
+                    <h1 class="text-3xl font-extrabold tracking-tight gradient-text flex items-center justify-center gap-2">
+                        Jilin
+                        <i class="fa-solid fa-circle-check text-indigo-400 text-lg" title="Verified Account"></i>
+                    </h1>
+                    <p class="text-sm text-indigo-300 font-semibold tracking-wide">DIGITAL CREATOR & DEVELOPER</p>
+                    <p class="text-xs text-slate-400 max-w-xs mx-auto mt-2 leading-relaxed">
+                        Crafting fluid web experiences and clean code architectures. Inspired by modular components and future aesthetics.
+                    </p>
+                </div>
 
-            <!-- Quick Contacts Row -->
-            <div class="flex items-center justify-center gap-3 pt-2 w-full">
-                <a href="https://wa.me/6281234567890" target="_blank" class="w-10 h-10 rounded-full bg-emerald-950/40 border border-emerald-500/20 hover:border-emerald-500 hover:bg-emerald-500/10 flex items-center justify-center text-emerald-400 transition-all duration-300" title="WhatsApp">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                </a>
-                <a href="mailto:jilin@example.com" class="w-10 h-10 rounded-full bg-blue-950/40 border border-blue-500/20 hover:border-blue-500 hover:bg-blue-500/10 flex items-center justify-center text-blue-400 transition-all duration-300" title="Email">
-                    <i class="fa-regular fa-envelope text-lg"></i>
-                </a>
-                <a href="https://github.com" target="_blank" class="w-10 h-10 rounded-full bg-slate-950/40 border border-slate-500/20 hover:border-slate-400 hover:bg-slate-400/10 flex items-center justify-center text-slate-300 transition-all duration-300" title="GitHub">
-                    <i class="fa-brands fa-github text-lg"></i>
-                </a>
+                <!-- Contacts Section -->
+                <div class="flex items-center justify-center gap-3 pt-2 w-full">
+                    <a href="https://wa.me/6281234567890" target="_blank" class="w-10 h-10 rounded-full bg-emerald-950/20 border border-emerald-500/20 hover:border-emerald-500 hover:bg-emerald-500/10 flex items-center justify-center text-emerald-400 transition-all duration-300" title="WhatsApp">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                    </a>
+                    <a href="mailto:jilin@example.com" class="w-10 h-10 rounded-full bg-blue-950/20 border border-blue-500/20 hover:border-blue-500 hover:bg-blue-500/10 flex items-center justify-center text-blue-400 transition-all duration-300" title="Email">
+                        <i class="fa-regular fa-envelope text-lg"></i>
+                    </a>
+                    <a href="https://github.com" target="_blank" class="w-10 h-10 rounded-full bg-slate-900/40 border border-slate-700/30 hover:border-slate-500 hover:bg-slate-700/10 flex items-center justify-center text-slate-300 transition-all duration-300" title="GitHub">
+                        <i class="fa-brands fa-github text-lg"></i>
+                    </a>
+                </div>
             </div>
         </div>
 
         <!-- About Me Section -->
-        <div class="glass-card rounded-2xl p-5 space-y-3">
-            <h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase flex items-center gap-2">
-                <i class="fa-solid fa-circle-info text-indigo-400 text-xs"></i> About Me
+        <div class="glass-card spotlight-card rounded-2xl p-5 space-y-3 animate-fade-up delay-2">
+            <h2 class="text-xs font-bold tracking-widest text-indigo-400 uppercase flex items-center gap-2">
+                <i class="fa-solid fa-sparkles text-xs"></i> About Me
             </h2>
             <p class="text-sm text-slate-300 leading-relaxed">
-                Hi, I'm <strong>Jilin</strong>. I specialize in backend systems, automated flows, and interactive user interfaces. I love building tools that simplify operations and make code beautiful. Currently open for collaborations and freelance opportunities.
+                Hi, I'm <strong>Jilin</strong>. I write interactive applications, deploy serverless logic, and build polished user interfaces. Inspired by communities like <span class="text-indigo-400 font-medium hover:underline">21st.dev</span> to blend design with interactive components.
             </p>
         </div>
 
         <!-- Links Container -->
-        <div class="space-y-3.5">
-            <h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase px-2 flex items-center gap-2">
-                <i class="fa-solid fa-link text-indigo-400 text-xs"></i> My Links & Portfolios
+        <div class="space-y-3">
+            <h2 class="text-xs font-bold tracking-widest text-slate-400 uppercase px-2 flex items-center gap-2 animate-fade-up delay-3">
+                <i class="fa-solid fa-link text-indigo-400 text-xs"></i> Connect
             </h2>
 
             <!-- Link 1 -->
-            <a href="https://github.com/mhsajiuk" target="_blank" class="btn-link glass-card rounded-2xl p-4 flex items-center justify-between group">
+            <a href="https://github.com/mhsajiuk" target="_blank" class="glass-card spotlight-card rounded-2xl p-4 flex items-center justify-between group animate-fade-up delay-4">
                 <div class="flex items-center gap-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-slate-900/80 flex items-center justify-center border border-slate-700/50 text-indigo-400 group-hover:text-indigo-300">
+                    <div class="w-10 h-10 rounded-xl bg-slate-900/60 flex items-center justify-center border border-slate-800 text-indigo-400 group-hover:text-indigo-300 transition-colors">
                         <i class="fa-brands fa-github text-xl"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-semibold text-white">GitHub Profile</h3>
-                        <p class="text-xs text-slate-400">Explore my open-source code & repositories</p>
+                        <h3 class="text-sm font-semibold text-white">GitHub</h3>
+                        <p class="text-xs text-slate-400">Explore open source codes & works</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-indigo-400 transition-colors"></i>
+                <i class="fa-solid fa-arrow-up-right text-xs text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
             </a>
 
             <!-- Link 2 -->
-            <a href="https://instagram.com" target="_blank" class="btn-link glass-card rounded-2xl p-4 flex items-center justify-between group">
+            <a href="https://instagram.com" target="_blank" class="glass-card spotlight-card rounded-2xl p-4 flex items-center justify-between group animate-fade-up delay-5">
                 <div class="flex items-center gap-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-slate-900/80 flex items-center justify-center border border-slate-700/50 text-indigo-400 group-hover:text-indigo-300">
+                    <div class="w-10 h-10 rounded-xl bg-slate-900/60 flex items-center justify-center border border-slate-800 text-indigo-400 group-hover:text-indigo-300 transition-colors">
                         <i class="fa-brands fa-instagram text-xl"></i>
                     </div>
                     <div>
                         <h3 class="text-sm font-semibold text-white">Instagram</h3>
-                        <p class="text-xs text-slate-400">Updates, stories, and personal logs</p>
+                        <p class="text-xs text-slate-400">Visual feeds, logs and activities</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-indigo-400 transition-colors"></i>
+                <i class="fa-solid fa-arrow-up-right text-xs text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
             </a>
 
             <!-- Link 3 -->
-            <a href="https://linkedin.com" target="_blank" class="btn-link glass-card rounded-2xl p-4 flex items-center justify-between group">
+            <a href="https://linkedin.com" target="_blank" class="glass-card spotlight-card rounded-2xl p-4 flex items-center justify-between group animate-fade-up delay-6">
                 <div class="flex items-center gap-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-slate-900/80 flex items-center justify-center border border-slate-700/50 text-indigo-400 group-hover:text-indigo-300">
+                    <div class="w-10 h-10 rounded-xl bg-slate-900/60 flex items-center justify-center border border-slate-800 text-indigo-400 group-hover:text-indigo-300 transition-colors">
                         <i class="fa-brands fa-linkedin-in text-xl"></i>
                     </div>
                     <div>
@@ -174,41 +298,25 @@
                         <p class="text-xs text-slate-400">Professional network and resume</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-indigo-400 transition-colors"></i>
-            </a>
-
-            <!-- Link 4 -->
-            <a href="https://twitter.com" target="_blank" class="btn-link glass-card rounded-2xl p-4 flex items-center justify-between group">
-                <div class="flex items-center gap-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-slate-900/80 flex items-center justify-center border border-slate-700/50 text-indigo-400 group-hover:text-indigo-300">
-                        <i class="fa-brands fa-twitter text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-semibold text-white">Twitter / X</h3>
-                        <p class="text-xs text-slate-400">Short thoughts, tech rants & retweets</p>
-                    </div>
-                </div>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-indigo-400 transition-colors"></i>
+                <i class="fa-solid fa-arrow-up-right text-xs text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
             </a>
         </div>
 
         <!-- YouTube Section -->
-        <div class="glass-card rounded-2xl p-5 space-y-4">
-            <h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase flex items-center gap-2">
+        <div class="glass-card spotlight-card rounded-2xl p-5 space-y-4 animate-fade-up delay-7">
+            <h2 class="text-xs font-bold tracking-widest text-slate-400 uppercase flex items-center gap-2">
                 <i class="fa-brands fa-youtube text-red-500"></i> Featured Video
             </h2>
             <div class="aspect-video w-full rounded-xl overflow-hidden border border-slate-800">
-                <!-- Replace with your actual YouTube video embed URL -->
                 <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
         </div>
 
         <!-- Spotify Section -->
-        <div class="glass-card rounded-2xl p-5 space-y-4">
-            <h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase flex items-center gap-2">
+        <div class="glass-card spotlight-card rounded-2xl p-5 space-y-4 animate-fade-up delay-8">
+            <h2 class="text-xs font-bold tracking-widest text-slate-400 uppercase flex items-center gap-2">
                 <i class="fa-brands fa-spotify text-emerald-500"></i> On Repeat
             </h2>
-            <!-- Replace with your actual Spotify track/playlist embed URL -->
             <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4PTG3Z6ehGkBF3zI7YmR6G?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
 
@@ -216,11 +324,24 @@
         <footer class="text-center pt-8 pb-4 text-xs text-slate-500 space-y-1">
             <p>&copy; 2026 Jilin. All rights reserved.</p>
             <p class="flex items-center justify-center gap-1">
-                Made with <i class="fa-solid fa-heart text-rose-500"></i> using Tailwind & Glassmorphism
+                Made with <i class="fa-solid fa-heart text-indigo-500"></i> using Tailwind & Animation
             </p>
         </footer>
 
     </div>
+
+    <!-- Mouse Tracking Script for Spotlight Cards -->
+    <script>
+        document.querySelectorAll('.spotlight-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
 
 </body>
 </html>
