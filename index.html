@@ -15,339 +15,221 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #030014;
+            background-color: #F8FAFC; /* Clean off-white background */
             min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        /* 21st.dev / Vercel style Premium Dot Grid Background */
-        .bg-grid {
-            position: fixed;
-            inset: 0;
-            background-size: 24px 24px;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-            z-index: -2;
         }
 
-        /* Enhanced Ambient Glow Effects for High Contrast Depth */
-        .bg-glow-1 {
-            position: fixed;
-            top: -20%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90vw;
-            height: 60vw;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.16) 0%, transparent 65%);
-            filter: blur(120px);
-            z-index: -1;
-            pointer-events: none;
+        /* Nav Menu Highlight */
+        .tab-active {
+            color: #0F172A;
+            font-weight: 700;
+            position: relative;
         }
-        .bg-glow-2 {
-            position: fixed;
-            bottom: -10%;
-            right: -10%;
-            width: 60vw;
-            height: 60vw;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
-            filter: blur(100px);
-            z-index: -1;
-            pointer-events: none;
+        .tab-active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #0F172A;
+            border-radius: 2px;
         }
 
-        /* Glassmorphism Cards with increased contrast (lighter darks & solid borders) */
-        .glass-card {
-            background: rgba(17, 17, 28, 0.75); /* Made lighter to stand out from black background */
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.09); /* Brighter border */
-            box-shadow: 
-                0 10px 40px -10px rgba(0, 0, 0, 0.7),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05); /* Top inner highlights */
+        /* Profile Card - Mint Base (#F0FEFA) */
+        .profile-card {
+            background-color: #F0FEFA;
+            border: 1px solid rgba(16, 185, 129, 0.1);
         }
 
-        /* Entrance fade up animations */
-        @keyframes fadeUp {
+        /* Premium Shadow for Cards */
+        .premium-shadow {
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 8px -1px rgba(15, 23, 42, 0.03);
+        }
+
+        /* Hover animation for link buttons */
+        .link-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .link-card:hover {
+            transform: translateY(-2px);
+            border-color: #0F172A;
+            background-color: #F8FAFC;
+            box-shadow: 0 12px 24px -10px rgba(15, 23, 42, 0.1);
+        }
+
+        /* Spotlight-like clean animations */
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(16px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        .animate-fade-up {
+        .animate-fade-in {
             opacity: 0;
-            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        .delay-1 { animation-delay: 0.08s; }
-        .delay-2 { animation-delay: 0.16s; }
-        .delay-3 { animation-delay: 0.24s; }
-        .delay-4 { animation-delay: 0.32s; }
-        .delay-5 { animation-delay: 0.4s; }
-        .delay-6 { animation-delay: 0.48s; }
-        .delay-7 { animation-delay: 0.56s; }
-        .delay-8 { animation-delay: 0.64s; }
-
-        /* Card Spotlight Interactive Glow (Follows mouse) */
-        .spotlight-card {
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
-        }
-        .spotlight-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(99, 102, 241, 0.45);
-            box-shadow: 
-                0 15px 40px -5px rgba(0, 0, 0, 0.8),
-                0 0 20px rgba(99, 102, 241, 0.15);
-        }
-        .spotlight-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(
-                300px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-                rgba(255, 255, 255, 0.08),
-                transparent 80%
-            );
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .spotlight-card:hover::before {
-            opacity: 1;
-        }
-
-        /* Border Beam (Animated Conic Border - Magic UI style) */
-        .border-beam-card {
-            position: relative;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            padding: 1px; /* border size */
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.7);
-        }
-        .border-beam-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(
-                from 0deg,
-                transparent 0deg,
-                transparent 120deg,
-                #818cf8 180deg,  /* Brighter indigo */
-                #c084fc 240deg,  /* Brighter purple */
-                transparent 300deg,
-                transparent 360deg
-            );
-            animation: rotateBeam 4s linear infinite; /* Faster rotation */
-            z-index: 0;
-        }
-        .border-beam-inner {
-            position: relative;
-            background: rgba(15, 15, 26, 0.95);
-            border-radius: calc(1.5rem - 1px);
-            z-index: 1;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        }
-        @keyframes rotateBeam {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Text Shine (Smooth Gradient Text) */
-        .gradient-text {
-            background: linear-gradient(to right, #ffffff, #c084fc, #818cf8, #ffffff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: textShine 4s linear infinite;
-        }
-        @keyframes textShine {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
-
-        /* Slow Spinning Profile Ring */
-        .avatar-ring {
-            position: relative;
-            width: 104px;
-            height: 104px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(0deg, #818cf8, #c084fc);
-            animation: spinRing 6s linear infinite;
-        }
-        @keyframes spinRing {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .pulse-emerald {
-            animation: pulseEmerald 2s infinite;
-        }
-        @keyframes pulseEmerald {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
-            70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.1s; }
+        .delay-3 { animation-delay: 0.15s; }
+        .delay-4 { animation-delay: 0.2s; }
+        .delay-5 { animation-delay: 0.25s; }
     </style>
 </head>
-<body class="text-slate-300 antialiased py-12 px-4 selection:bg-indigo-500 selection:text-white">
+<body class="text-[#334155] antialiased selection:bg-[#0F172A] selection:text-white pb-16">
 
-    <!-- Ambient Grids & Glows -->
-    <div class="bg-grid"></div>
-    <div class="bg-glow-1"></div>
-    <div class="bg-glow-2"></div>
+    <!-- Top Navigation Bar -->
+    <header class="w-full max-w-2xl mx-auto px-6 py-5 flex items-center justify-between border-b border-slate-200/60 animate-fade-in">
+        <div class="flex items-center gap-2">
+            <!-- Brand Icon -->
+            <div class="w-7 h-7 rounded-lg bg-[#0F172A] flex items-center justify-center text-white text-xs font-bold">
+                J
+            </div>
+            <span class="text-sm font-extrabold text-[#0F172A] tracking-tight">Jilin Bio</span>
+        </div>
+        <a href="https://wa.me/6281234567890" target="_blank" class="px-4 py-2 rounded-full bg-[#0F172A] text-white text-xs font-bold hover:bg-slate-800 transition-colors shadow-sm">
+            Contact Me
+        </a>
+    </header>
 
-    <div class="max-w-md mx-auto space-y-6">
-        
-        <!-- Profile Section -->
-        <div class="border-beam-card animate-fade-up delay-1">
-            <div class="border-beam-inner p-6 text-center flex flex-col items-center space-y-4">
-                <div class="relative group mt-2">
-                    <!-- Spinning gradient ring behind avatar -->
-                    <div class="avatar-ring"></div>
-                    <!-- Avatar Image Container -->
-                    <div class="absolute inset-[4px] rounded-full bg-[#0a0a14] flex items-center justify-center overflow-hidden border border-white/5">
-                        <img src="https://i.pinimg.com/originals/ea/6e/00/ea6e0069abf7777c75f59fbd2714528a.jpg" alt="Jilin" class="w-full h-full object-cover">
-                    </div>
-                    <!-- Online Dot Status -->
-                    <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-[#030014] rounded-full pulse-emerald"></span>
+    <!-- Content Container -->
+    <main class="w-full max-w-md mx-auto px-4 mt-8 space-y-6">
+
+        <!-- Tabs Navigation -->
+        <div class="flex items-center justify-center gap-8 border-b border-slate-200/50 pb-2 animate-fade-in delay-1">
+            <button class="text-sm font-semibold text-[#0F172A] tab-active">ABOUT</button>
+            <a href="https://github.com/mhsajiuk?tab=repositories" target="_blank" class="text-sm font-semibold text-slate-400 hover:text-slate-600 transition-colors">PROJECTS</a>
+            <a href="https://i.pinimg.com/originals/ea/6e/00/ea6e0069abf7777c75f59fbd2714528a.jpg" target="_blank" class="text-sm font-semibold text-slate-400 hover:text-slate-600 transition-colors">GALLERY</a>
+        </div>
+
+        <!-- Section 1: Profile & About Wrap -->
+        <div class="space-y-4 animate-fade-in delay-2">
+            
+            <!-- Mint Green Profile Card -->
+            <div class="profile-card rounded-3xl p-6 flex flex-col items-center justify-center text-center premium-shadow">
+                <div class="relative w-28 h-28 rounded-full border-4 border-white overflow-hidden shadow-md">
+                    <!-- Pinterest Avatar image -->
+                    <img src="https://i.pinimg.com/originals/ea/6e/00/ea6e0069abf7777c75f59fbd2714528a.jpg" alt="Jilin" class="w-full h-full object-cover">
                 </div>
-                
-                <div class="space-y-1.5 pt-1">
-                    <h1 class="text-3xl font-extrabold tracking-tight gradient-text flex items-center justify-center gap-2">
-                        Jilin
-                        <i class="fa-solid fa-circle-check text-blue-400 text-xl" title="Verified Account"></i>
-                    </h1>
-                    <p class="text-xs text-indigo-400 font-extrabold tracking-widest uppercase">DIGITAL CREATOR & DEVELOPER</p>
-                    <p class="text-sm text-slate-400 max-w-xs mx-auto mt-2 leading-relaxed font-medium">
-                        Crafting fluid web experiences and clean code architectures. Inspired by modular components and future aesthetics.
-                    </p>
-                </div>
+                <h1 class="text-2xl font-black text-[#0F172A] mt-4 tracking-tight flex items-center gap-1.5 justify-center">
+                    Jilin
+                    <i class="fa-solid fa-circle-check text-indigo-600 text-base" title="Verified Account"></i>
+                </h1>
+                <p class="text-xs font-extrabold text-indigo-600 tracking-wider uppercase mt-1">Digital Creator & Developer</p>
+            </div>
 
-                <!-- Contacts Section (High Contrast Colored Buttons) -->
-                <div class="flex items-center justify-center gap-3 pt-2 w-full">
-                    <a href="https://wa.me/6281234567890" target="_blank" class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 hover:border-emerald-400 hover:bg-emerald-500/20 hover:scale-105 flex items-center justify-center text-emerald-400 transition-all duration-300 shadow-lg shadow-emerald-950/20" title="WhatsApp">
-                        <i class="fa-brands fa-whatsapp text-xl"></i>
+            <!-- About Intro Card -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-200/60 premium-shadow space-y-4">
+                <h2 class="text-lg font-extrabold text-[#0F172A] tracking-tight">HI 👋 Jilin is Here.</h2>
+                <p class="text-sm leading-relaxed text-[#475569]">
+                    Happy to share my knowledge about Freelancing, UIUX Designs, Plugin Underrated, No-Code Builder, and modern software architectures. Let's create beautiful things!
+                </p>
+
+                <!-- Social Media Horizontal Buttons (Clean, Figma-like shapes) -->
+                <div class="flex items-center gap-2 pt-2 flex-wrap">
+                    <a href="https://twitter.com" target="_blank" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-[#0F172A] hover:bg-slate-100 transition-colors" title="Twitter/X">
+                        <i class="fa-brands fa-x-twitter text-sm"></i>
                     </a>
-                    <a href="mailto:jilin@example.com" class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 hover:border-blue-400 hover:bg-blue-500/20 hover:scale-105 flex items-center justify-center text-blue-400 transition-all duration-300 shadow-lg shadow-blue-950/20" title="Email">
-                        <i class="fa-regular fa-envelope text-xl"></i>
+                    <a href="https://linkedin.com" target="_blank" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-[#0F172A] hover:bg-slate-100 transition-colors" title="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in text-sm"></i>
                     </a>
-                    <a href="https://github.com" target="_blank" class="w-12 h-12 rounded-xl bg-slate-500/10 border border-slate-500/30 hover:border-slate-400 hover:bg-slate-500/20 hover:scale-105 flex items-center justify-center text-slate-300 transition-all duration-300 shadow-lg shadow-slate-950/20" title="GitHub">
-                        <i class="fa-brands fa-github text-xl"></i>
+                    <a href="mailto:jilin@example.com" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-[#0F172A] hover:bg-slate-100 transition-colors" title="Email">
+                        <i class="fa-regular fa-envelope text-sm"></i>
+                    </a>
+                    <a href="https://tiktok.com" target="_blank" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-[#0F172A] hover:bg-slate-100 transition-colors" title="TikTok">
+                        <i class="fa-brands fa-tiktok text-sm"></i>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-[#0F172A] hover:bg-slate-100 transition-colors" title="Instagram">
+                        <i class="fa-brands fa-instagram text-sm"></i>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-[#0F172A] hover:bg-slate-100 transition-colors" title="YouTube">
+                        <i class="fa-brands fa-youtube text-sm"></i>
                     </a>
                 </div>
             </div>
+
         </div>
 
-        <!-- About Me Section -->
-        <div class="glass-card spotlight-card rounded-2xl p-5 space-y-3 animate-fade-up delay-2">
-            <h2 class="text-xs font-extrabold tracking-widest text-indigo-400 uppercase flex items-center gap-2">
-                <i class="fa-solid fa-sparkles text-xs"></i> About Me
-            </h2>
-            <p class="text-sm text-slate-300 leading-relaxed font-medium">
-                Hi, I'm <strong class="text-white font-bold">Jilin</strong>. I write interactive applications, deploy serverless logic, and build polished user interfaces. Inspired by communities like <span class="text-indigo-400 font-bold hover:underline">21st.dev</span> to blend design with interactive components.
-            </p>
-        </div>
+        <!-- Section 2: Link Cards Container -->
+        <div class="space-y-3 animate-fade-in delay-3">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest px-2">Featured Contents</h3>
 
-        <!-- Links Container -->
-        <div class="space-y-3">
-            <h2 class="text-xs font-extrabold tracking-widest text-slate-400 uppercase px-2 flex items-center gap-2 animate-fade-up delay-3">
-                <i class="fa-solid fa-link text-indigo-400 text-xs"></i> Connect
-            </h2>
-
-            <!-- Link 1 -->
-            <a href="https://github.com/mhsajiuk" target="_blank" class="glass-card spotlight-card rounded-2xl p-4 flex items-center justify-between group animate-fade-up delay-4">
-                <div class="flex items-center gap-3.5">
-                    <div class="w-11 h-11 rounded-xl bg-slate-900/80 flex items-center justify-center border border-slate-800 text-indigo-400 group-hover:text-indigo-300 transition-colors">
-                        <i class="fa-brands fa-github text-xl"></i>
+            <!-- Link Card 1 -->
+            <a href="https://github.com/mhsajiuk" target="_blank" class="link-card bg-white border border-slate-200/80 rounded-2xl p-4 flex items-center justify-between premium-shadow group">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-[#F0FEFA] border border-emerald-100 flex items-center justify-center text-indigo-600">
+                        <i class="fa-solid fa-users text-sm"></i>
                     </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-white">GitHub</h3>
-                        <p class="text-xs text-slate-400 font-medium">Explore open source codes & works</p>
-                    </div>
+                    <span class="text-sm font-bold text-[#0F172A]">JOIN GROUP BARUDAK FIGMA ⚡</span>
                 </div>
-                <i class="fa-solid fa-arrow-up-right text-xs text-slate-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
+                <div class="w-7 h-7 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-[#0F172A] group-hover:border-[#0F172A] transition-colors">
+                    <i class="fa-solid fa-arrow-up-right text-2xs"></i>
+                </div>
             </a>
 
-            <!-- Link 2 -->
-            <a href="https://instagram.com" target="_blank" class="glass-card spotlight-card rounded-2xl p-4 flex items-center justify-between group animate-fade-up delay-5">
-                <div class="flex items-center gap-3.5">
-                    <div class="w-11 h-11 rounded-xl bg-slate-900/80 flex items-center justify-center border border-slate-800 text-indigo-400 group-hover:text-indigo-300 transition-colors">
-                        <i class="fa-brands fa-instagram text-xl"></i>
+            <!-- Link Card 2 -->
+            <a href="#" class="link-card bg-white border border-slate-200/80 rounded-2xl p-4 flex items-center justify-between premium-shadow group">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-[#F0FEFA] border border-emerald-100 flex items-center justify-center text-indigo-600">
+                        <i class="fa-solid fa-book-open text-sm"></i>
                     </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-white">Instagram</h3>
-                        <p class="text-xs text-slate-400 font-medium">Visual feeds, logs and activities</p>
-                    </div>
+                    <span class="text-sm font-bold text-[#0F172A]">FILE DOCS BELAJAR VARIABLES</span>
                 </div>
-                <i class="fa-solid fa-arrow-up-right text-xs text-slate-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
+                <div class="w-7 h-7 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-[#0F172A] group-hover:border-[#0F172A] transition-colors">
+                    <i class="fa-solid fa-arrow-up-right text-2xs"></i>
+                </div>
             </a>
 
-            <!-- Link 3 -->
-            <a href="https://linkedin.com" target="_blank" class="glass-card spotlight-card rounded-2xl p-4 flex items-center justify-between group animate-fade-up delay-6">
-                <div class="flex items-center gap-3.5">
-                    <div class="w-11 h-11 rounded-xl bg-slate-900/80 flex items-center justify-center border border-slate-800 text-indigo-400 group-hover:text-indigo-300 transition-colors">
-                        <i class="fa-brands fa-linkedin-in text-xl"></i>
+            <!-- Link Card 3 -->
+            <a href="#" class="link-card bg-white border border-slate-200/80 rounded-2xl p-4 flex items-center justify-between premium-shadow group">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-[#F0FEFA] border border-emerald-100 flex items-center justify-center text-indigo-600">
+                        <i class="fa-solid fa-folder-open text-sm"></i>
                     </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-white">LinkedIn</h3>
-                        <p class="text-xs text-slate-400 font-medium">Professional network and resume</p>
-                    </div>
+                    <span class="text-sm font-bold text-[#0F172A]">MOKNOT: RATUSAN RESOURCES UIUX</span>
                 </div>
-                <i class="fa-solid fa-arrow-up-right text-xs text-slate-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
+                <div class="w-7 h-7 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-[#0F172A] group-hover:border-[#0F172A] transition-colors">
+                    <i class="fa-solid fa-arrow-up-right text-2xs"></i>
+                </div>
             </a>
         </div>
 
-        <!-- YouTube Section -->
-        <div class="glass-card spotlight-card rounded-2xl p-5 space-y-4 animate-fade-up delay-7">
-            <h2 class="text-xs font-extrabold tracking-widest text-slate-400 uppercase flex items-center gap-2">
-                <i class="fa-brands fa-youtube text-red-500"></i> Featured Video
-            </h2>
-            <div class="aspect-video w-full rounded-xl overflow-hidden border border-slate-800">
-                <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <!-- Section 3: Integrations & Media (YouTube & Spotify) -->
+        <div class="space-y-4 animate-fade-in delay-4">
+            
+            <!-- Spotify Widget with light mode styling frame -->
+            <div class="bg-white rounded-3xl p-5 border border-slate-200/60 premium-shadow space-y-3">
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <i class="fa-brands fa-spotify text-emerald-500"></i> Currently On Repeat
+                </h4>
+                <iframe style="border-radius:16px" src="https://open.spotify.com/embed/track/4qW3BbQAwZsrnu8a3ZRdyT?utm_source=generator&theme=1" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
             </div>
-        </div>
 
-        <!-- Spotify Section -->
-        <div class="glass-card spotlight-card rounded-2xl p-5 space-y-4 animate-fade-up delay-8">
-            <h2 class="text-xs font-extrabold tracking-widest text-slate-400 uppercase flex items-center gap-2">
-                <i class="fa-brands fa-spotify text-emerald-500"></i> On Repeat
-            </h2>
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4qW3BbQAwZsrnu8a3ZRdyT?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <!-- YouTube Video Widget -->
+            <div class="bg-white rounded-3xl p-5 border border-slate-200/60 premium-shadow space-y-3">
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <i class="fa-brands fa-youtube text-red-500"></i> Featured Video
+                </h4>
+                <div class="aspect-video w-full rounded-2xl overflow-hidden border border-slate-100">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+            </div>
+
         </div>
 
         <!-- Footer -->
-        <footer class="text-center pt-8 pb-4 text-xs text-slate-500 space-y-1">
+        <footer class="text-center pt-8 text-xs text-slate-400 space-y-1 animate-fade-in delay-5">
             <p>&copy; 2026 Jilin. All rights reserved.</p>
             <p class="flex items-center justify-center gap-1">
-                Made with <i class="fa-solid fa-heart text-indigo-500"></i> using Tailwind & Animation
+                Designed via Figma &bull; Built with Tailwind CSS
             </p>
         </footer>
 
-    </div>
-
-    <!-- Mouse Tracking Script for Spotlight Cards -->
-    <script>
-        document.querySelectorAll('.spotlight-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-        });
-    </script>
+    </main>
 
 </body>
 </html>
