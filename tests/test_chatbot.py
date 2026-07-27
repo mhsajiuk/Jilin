@@ -29,6 +29,11 @@ class ChatbotWidgetTests(unittest.TestCase):
         self.assertIn('id="chatbot-input"', self.html)
         self.assertIn('findFaqAnswer', self.html)
 
+    def test_simulates_typing_indicator(self):
+        self.assertIn('chatbot-message-typing', self.html)
+        self.assertIn('setTimeout', self.html)
+
+
 
 if __name__ == "__main__":
     unittest.main()

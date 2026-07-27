@@ -192,6 +192,32 @@
             color: #fff;
             border-bottom-right-radius: 4px;
         }
+        .chatbot-message-typing {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 14px;
+            background: #fff;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            border-bottom-left-radius: 4px;
+            width: fit-content;
+            margin-bottom: 10px;
+        }
+        .chatbot-message-typing span {
+            width: 6px;
+            height: 6px;
+            background: #94A3B8;
+            border-radius: 50%;
+            display: inline-block;
+            animation: chatbotBounce 1.4s infinite ease-in-out both;
+        }
+        .chatbot-message-typing span:nth-child(1) { animation-delay: -0.32s; }
+        .chatbot-message-typing span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes chatbotBounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
         .chatbot-quick-questions {
             display: flex;
             gap: 7px;
@@ -832,7 +858,40 @@
             const cleanQuestion = question.trim();
             if (!cleanQuestion) return;
             addChatMessage(cleanQuestion, 'user');
-            addChatMessage(findFaqAnswer(cleanQuestion).answer, 'bot');
+
+            // Hapus element typing lama jika ada
+            const existingTyping = document.getElementById('chatbot-typing-indicator');
+            if (existingTyping) existingTyping.remove();
+
+            // Buat & tampilkan typing indicator melenting
+            const typingIndicator = document.createElement('div');
+            typingIndicator.id = 'chatbot-typing-indicator';
+            typingIndicator.className = 'chatbot-message-typing';
+            typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+            chatbotMessages.appendChild(typingIndicator);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+            // Nonaktifkan form & quick question agar user tidak spam selagi bot ngetik
+            const buttons = chatbotQuickQuestions.querySelectorAll('button');
+            buttons.forEach(btn => btn.disabled = true);
+            const inputField = chatbotInput;
+            const submitButton = chatbotForm.querySelector('button[type="submit"]');
+            if (inputField) inputField.disabled = true;
+            if (submitButton) submitButton.disabled = true;
+
+            setTimeout(() => {
+                const indicator = document.getElementById('chatbot-typing-indicator');
+                if (indicator) indicator.remove();
+                addChatMessage(findFaqAnswer(cleanQuestion).answer, 'bot');
+                
+                // Aktifkan kembali input dan tombol setelah beres typing
+                buttons.forEach(btn => btn.disabled = false);
+                if (inputField) {
+                    inputField.disabled = false;
+                    inputField.focus();
+                }
+                if (submitButton) submitButton.disabled = false;
+            }, 1200); // 1.2 detik typing delay simulator
         }
 
         faqEntries.forEach((entry) => {
