@@ -94,6 +94,160 @@
             opacity: 0;
             animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+
+        /* Floating FAQ chatbot */
+        .chatbot-widget {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 50;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .chatbot-toggle {
+            width: 58px;
+            height: 58px;
+            border: 0;
+            border-radius: 999px;
+            background: #0F172A;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 14px 28px -8px rgba(15, 23, 42, 0.38);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        .chatbot-toggle:hover {
+            background: #1E293B;
+            transform: translateY(-2px) scale(1.03);
+        }
+        .chatbot-toggle:focus-visible,
+        .chatbot-close:focus-visible,
+        .chatbot-quick-question:focus-visible,
+        .chatbot-send:focus-visible,
+        .chatbot-input:focus-visible {
+            outline: 3px solid #818CF8;
+            outline-offset: 3px;
+        }
+        .chatbot-panel {
+            position: absolute;
+            right: 0;
+            bottom: 70px;
+            width: min(360px, calc(100vw - 32px));
+            overflow: hidden;
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            border-radius: 22px;
+            background: #fff;
+            box-shadow: 0 24px 60px -18px rgba(15, 23, 42, 0.28);
+            opacity: 0;
+            transform: translateY(12px) scale(0.97);
+            transform-origin: bottom right;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .chatbot-panel.is-open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        .chatbot-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 15px 16px;
+            background: #0F172A;
+            color: #fff;
+        }
+        .chatbot-close {
+            width: 30px;
+            height: 30px;
+            border: 0;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            cursor: pointer;
+        }
+        .chatbot-messages {
+            height: 218px;
+            overflow-y: auto;
+            padding: 14px;
+            background: #F8FAFC;
+        }
+        .chatbot-message {
+            width: fit-content;
+            max-width: 88%;
+            margin-bottom: 10px;
+            padding: 10px 12px;
+            border-radius: 14px;
+            font-size: 12px;
+            line-height: 1.55;
+        }
+        .chatbot-message.bot {
+            background: #fff;
+            color: #334155;
+            border: 1px solid #E2E8F0;
+            border-bottom-left-radius: 4px;
+        }
+        .chatbot-message.user {
+            margin-left: auto;
+            background: #0F172A;
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+        .chatbot-quick-questions {
+            display: flex;
+            gap: 7px;
+            overflow-x: auto;
+            padding: 11px 14px;
+            border-top: 1px solid #E2E8F0;
+            background: #fff;
+            scrollbar-width: thin;
+        }
+        .chatbot-quick-question {
+            flex: 0 0 auto;
+            border: 1px solid #CBD5E1;
+            border-radius: 999px;
+            padding: 7px 10px;
+            background: #fff;
+            color: #334155;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+        }
+        .chatbot-quick-question:hover {
+            border-color: #0F172A;
+            background: #F8FAFC;
+            color: #0F172A;
+        }
+        .chatbot-form {
+            display: flex;
+            gap: 8px;
+            padding: 12px 14px;
+            border-top: 1px solid #E2E8F0;
+            background: #fff;
+        }
+        .chatbot-input {
+            min-width: 0;
+            flex: 1;
+            border: 1px solid #CBD5E1;
+            border-radius: 11px;
+            padding: 9px 10px;
+            color: #0F172A;
+            font: inherit;
+            font-size: 12px;
+        }
+        .chatbot-send {
+            width: 38px;
+            border: 0;
+            border-radius: 11px;
+            background: #0F172A;
+            color: #fff;
+            cursor: pointer;
+        }
+        @media (max-width: 480px) {
+            .chatbot-widget { right: 14px; bottom: 14px; }
+            .chatbot-panel { bottom: 68px; }
+            .chatbot-messages { height: 200px; }
+        }
     </style>
 </head>
 <body class="text-[#334155] antialiased selection:bg-[#0F172A] selection:text-white pb-16">
@@ -544,6 +698,34 @@
 
     </main>
 
+    <!-- Floating FAQ Chatbot -->
+    <section class="chatbot-widget" aria-label="Bantuan LINSTORE">
+        <div id="chatbot-panel" class="chatbot-panel" role="dialog" aria-modal="false" aria-labelledby="chatbot-title" aria-hidden="true">
+            <div class="chatbot-header">
+                <div>
+                    <p id="chatbot-title" class="text-sm font-extrabold">Bantuan LINSTORE</p>
+                    <p class="text-[10px] text-slate-300 mt-0.5">Tanya seputar layanan kami</p>
+                </div>
+                <button id="chatbot-close" class="chatbot-close" type="button" aria-label="Tutup chat bantuan">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div id="chatbot-messages" class="chatbot-messages" aria-live="polite">
+                <div class="chatbot-message bot">Halo! 👋 Pilih pertanyaan di bawah atau ketik pertanyaan lo. Aku bantu jawab FAQ LINSTORE.</div>
+            </div>
+            <div id="chatbot-quick-questions" class="chatbot-quick-questions" aria-label="Pertanyaan cepat"></div>
+            <form id="chatbot-form" class="chatbot-form">
+                <input id="chatbot-input" class="chatbot-input" type="text" autocomplete="off" placeholder="Tulis pertanyaan..." aria-label="Tulis pertanyaan untuk bantuan">
+                <button class="chatbot-send" type="submit" aria-label="Kirim pertanyaan">
+                    <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+                </button>
+            </form>
+        </div>
+        <button id="chatbot-toggle" class="chatbot-toggle" type="button" aria-label="Buka chat bantuan" aria-expanded="false" aria-controls="chatbot-panel">
+            <i class="fa-solid fa-comment-dots text-xl" aria-hidden="true"></i>
+        </button>
+    </section>
+
     <!-- SPA Tab Switcher Script -->
     <script>
         function switchTab(tabName) {
@@ -563,6 +745,120 @@
                 document.getElementById('view-testimonials').classList.add('active');
             }
         }
+
+        // FAQ lokal — semua jawaban ada di halaman ini, tanpa API.
+        const faqEntries = [
+            {
+                question: 'Gimana cara order?',
+                answer: 'Pilih layanan yang lo butuhkan di tab Layanan, lalu klik kartunya. Lo akan diarahkan langsung ke WhatsApp admin untuk lanjut order.',
+                keywords: ['cara order', 'gimana order', 'pesan', 'beli', 'order']
+            },
+            {
+                question: 'Apakah perlu password akun?',
+                answer: 'Nggak perlu. LINSTORE tidak meminta password akun lo. Cukup kirim username atau link sesuai layanan yang dipilih.',
+                keywords: ['password', 'aman', 'akun', 'login']
+            },
+            {
+                question: 'Berapa lama prosesnya?',
+                answer: 'Proses biasanya cepat dan otomatis, tetapi estimasi pastinya tergantung jenis layanan serta jumlah pesanan. Admin akan kasih detailnya sebelum order diproses.',
+                keywords: ['berapa lama', 'proses', 'estimasi', 'masuk', 'cepat']
+            },
+            {
+                question: 'Ada garansi refill?',
+                answer: 'Ada layanan yang bergaransi refill. Konfirmasi jenis layanan yang lo pilih ke admin agar periode dan ketentuan refill-nya jelas.',
+                keywords: ['garansi', 'refill', 'drop', 'turun']
+            },
+            {
+                question: 'Layanan apa saja yang tersedia?',
+                answer: 'Saat ini tersedia layanan Instagram, TikTok, dan YouTube—termasuk followers, likes, views, subscribers, serta jam tayang. Cek tab Layanan untuk pilihannya.',
+                keywords: ['layanan', 'tersedia', 'instagram', 'tiktok', 'youtube', 'followers', 'likes', 'views', 'subscriber']
+            },
+            {
+                question: 'Bagaimana tanya harga atau pembayaran?',
+                answer: 'Untuk harga paket dan metode pembayaran terbaru, chat admin via WhatsApp. Sebutkan layanan dan jumlah yang lo butuhkan supaya admin bisa kasih penawaran yang pas.',
+                keywords: ['harga', 'biaya', 'bayar', 'pembayaran', 'transfer', 'paket']
+            }
+        ];
+
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotPanel = document.getElementById('chatbot-panel');
+        const chatbotClose = document.getElementById('chatbot-close');
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotQuickQuestions = document.getElementById('chatbot-quick-questions');
+        const chatbotForm = document.getElementById('chatbot-form');
+        const chatbotInput = document.getElementById('chatbot-input');
+
+        function addChatMessage(text, sender) {
+            const message = document.createElement('div');
+            message.className = `chatbot-message ${sender}`;
+            message.textContent = text;
+            chatbotMessages.appendChild(message);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        function setChatbotOpen(isOpen) {
+            chatbotPanel.classList.toggle('is-open', isOpen);
+            chatbotPanel.setAttribute('aria-hidden', String(!isOpen));
+            chatbotToggle.setAttribute('aria-expanded', String(isOpen));
+            chatbotToggle.setAttribute('aria-label', isOpen ? 'Tutup chat bantuan' : 'Buka chat bantuan');
+            if (isOpen) chatbotInput.focus();
+        }
+
+        function normaliseText(text) {
+            return text.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+        }
+
+        function findFaqAnswer(question) {
+            const query = normaliseText(question);
+            let bestMatch = null;
+            let highestScore = 0;
+
+            faqEntries.forEach((entry) => {
+                const score = entry.keywords.reduce((total, keyword) => {
+                    return total + (query.includes(keyword) ? keyword.split(' ').length : 0);
+                }, 0);
+                if (score > highestScore) {
+                    highestScore = score;
+                    bestMatch = entry;
+                }
+            });
+
+            return bestMatch || {
+                answer: 'Maaf, aku belum nemu jawaban yang cocok. Coba pilih pertanyaan cepat di atas, atau hubungi admin WhatsApp biar dibantu langsung ya.'
+            };
+        }
+
+        function answerFaq(question) {
+            const cleanQuestion = question.trim();
+            if (!cleanQuestion) return;
+            addChatMessage(cleanQuestion, 'user');
+            addChatMessage(findFaqAnswer(cleanQuestion).answer, 'bot');
+        }
+
+        faqEntries.forEach((entry) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'chatbot-quick-question';
+            button.textContent = entry.question;
+            button.addEventListener('click', () => answerFaq(entry.question));
+            chatbotQuickQuestions.appendChild(button);
+        });
+
+        chatbotToggle.addEventListener('click', () => {
+            setChatbotOpen(!chatbotPanel.classList.contains('is-open'));
+        });
+        chatbotClose.addEventListener('click', () => setChatbotOpen(false));
+        chatbotForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            answerFaq(chatbotInput.value);
+            chatbotInput.value = '';
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && chatbotPanel.classList.contains('is-open')) {
+                setChatbotOpen(false);
+                chatbotToggle.focus();
+            }
+        });
     </script>
 
 </body>
