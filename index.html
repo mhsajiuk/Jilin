@@ -413,64 +413,72 @@
         <div id="view-freebies" class="view-section space-y-6">
             
             <div class="text-center py-2">
-                <h2 class="text-xl font-extrabold text-[#0F172A] tracking-tight">Freebies & Aset</h2>
-                <p class="text-xs text-slate-400 mt-1">File desain berkualitas tinggi, UI kit, dan template gratis.</p>
+                <h2 class="text-xl font-extrabold text-[#0F172A] tracking-tight">Free Followers & Subscribers 🎁</h2>
+                <p class="text-xs text-slate-400 mt-1">Klaim layanan SMM gratis harian untuk akun sosial mediamu!</p>
             </div>
 
-            <!-- Freebies Grid Layout -->
-            <div class="grid grid-cols-1 gap-4">
-                
-                <!-- Freebie 1 -->
-                <div class="freebies-card bg-white border border-slate-200/60 rounded-3xl overflow-hidden premium-shadow">
-                    <!-- GIF Preview -->
-                    <div class="aspect-[16/10] bg-slate-900 border-b border-slate-100 overflow-hidden relative group">
-                        <img src="https://i.pinimg.com/originals/e5/4a/fa/e54afabd75adb33464e85f2687b43f87.gif" alt="MokUI Mobile Design System v1.0" class="w-full h-full object-cover">
-                    </div>
-                    <!-- Details Frame -->
-                    <div class="p-5 space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-3xs font-extrabold text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-md uppercase tracking-wider">UI KIT</span>
-                            <span class="text-xs font-black text-emerald-600">GRATIS</span>
+            <!-- Freebies Form Card -->
+            <div class="bg-white border border-slate-200/60 rounded-3xl p-6 premium-shadow space-y-4">
+                <form id="freebie-form" class="space-y-4" onsubmit="handleFreebieSubmit(event)">
+                    <!-- Service Selection -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-400 uppercase tracking-widest">Pilih Layanan Gratis</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 border-slate-200 cursor-pointer hover:border-slate-800 transition-all select-card group">
+                                <input type="radio" name="service" value="instagram" class="sr-only" checked onclick="toggleServiceSelection(this)">
+                                <i class="fa-brands fa-instagram text-2xl text-pink-600 mb-1"></i>
+                                <span class="text-xs font-bold text-slate-700">Instagram Followers</span>
+                                <span class="text-3xs text-slate-400 mt-0.5">Maks 100 Followers</span>
+                                <div class="absolute top-2 right-2 w-3.5 h-3.5 rounded-full border-2 border-slate-300 flex items-center justify-center group-checked:border-slate-800 check-indicator">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-slate-800 hidden inner-check"></div>
+                                </div>
+                            </label>
+                            
+                            <label class="relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 border-slate-200 cursor-pointer hover:border-slate-800 transition-all select-card group">
+                                <input type="radio" name="service" value="youtube" class="sr-only" onclick="toggleServiceSelection(this)">
+                                <i class="fa-brands fa-youtube text-2xl text-red-600 mb-1"></i>
+                                <span class="text-xs font-bold text-slate-700">YouTube Subs</span>
+                                <span class="text-3xs text-slate-400 mt-0.5">Maks 50 Subscribers</span>
+                                <div class="absolute top-2 right-2 w-3.5 h-3.5 rounded-full border-2 border-slate-300 flex items-center justify-center check-indicator">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-slate-800 hidden inner-check"></div>
+                                </div>
+                            </label>
                         </div>
-                        <h3 class="text-sm font-extrabold text-[#0F172A] leading-snug">MokUI Mobile Design System v1.0</h3>
-                        <p class="text-xs text-slate-400">Komponen lengkap, gaya desain, dan variabel untuk iOS & Android.</p>
                     </div>
-                </div>
 
-                <!-- Freebie 2 -->
-                <div class="freebies-card bg-white border border-slate-200/60 rounded-3xl overflow-hidden premium-shadow">
-                    <!-- GIF Preview -->
-                    <div class="aspect-[16/10] bg-slate-900 border-b border-slate-100 overflow-hidden relative group">
-                        <img src="https://i.pinimg.com/originals/f5/f2/74/f5f27448c036af645c27467c789ad759.gif" alt="Minimalist Portfolio Framer Template" class="w-full h-full object-cover">
-                    </div>
-                    <!-- Details Frame -->
-                    <div class="p-5 space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-3xs font-extrabold text-purple-600 bg-purple-50 border border-purple-100 px-2 py-0.5 rounded-md uppercase tracking-wider">TEMPLATES</span>
-                            <span class="text-xs font-black text-emerald-600">GRATIS</span>
+                    <!-- Target Link/Username -->
+                    <div class="space-y-1.5">
+                        <label for="freebie-target" class="text-xs font-bold text-slate-400 uppercase tracking-widest" id="target-label">Username Instagram</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400" id="target-icon-container">
+                                <i class="fa-solid fa-at text-xs" id="target-icon"></i>
+                            </div>
+                            <input type="text" id="freebie-target" required placeholder="Contoh: sebastianwirajaya11" class="w-full pl-9 pr-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-slate-800 transition-colors">
                         </div>
-                        <h3 class="text-sm font-extrabold text-[#0F172A] leading-snug">Minimalist Portfolio Framer Template</h3>
-                        <p class="text-xs text-slate-400">Desain website portofolio mode gelap yang dioptimalkan untuk loading cepat & SEO.</p>
+                        <p class="text-3xs text-slate-400" id="target-help">Pastikan akun tidak diprivate & username ditulis dengan benar.</p>
                     </div>
-                </div>
 
-                <!-- Freebie 3 -->
-                <div class="freebies-card bg-white border border-slate-200/60 rounded-3xl overflow-hidden premium-shadow">
-                    <!-- GIF Preview -->
-                    <div class="aspect-[16/10] bg-slate-900 border-b border-slate-100 overflow-hidden relative group">
-                        <img src="https://i.pinimg.com/originals/fe/7c/f8/fe7cf85130d8be56e5eedb8d63fda1da.gif" alt="Premium 3D Tech Illustration Pack" class="w-full h-full object-cover">
-                    </div>
-                    <!-- Details Frame -->
-                    <div class="p-5 space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-3xs font-extrabold text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-md uppercase tracking-wider">ASSETS</span>
-                            <span class="text-xs font-black text-emerald-600">GRATIS</span>
-                        </div>
-                        <h3 class="text-sm font-extrabold text-[#0F172A] leading-snug">Premium 3D Tech Illustration Pack</h3>
-                        <p class="text-xs text-slate-400">12 objek 3D resolusi tinggi untuk presentasi, situs web, dan materi desain.</p>
-                    </div>
-                </div>
+                    <!-- Submit Button -->
+                    <button type="submit" id="freebie-submit-btn" class="w-full py-3 rounded-2xl bg-[#0F172A] text-white text-sm font-bold hover:bg-slate-800 transition-colors shadow-sm flex items-center justify-center gap-2">
+                        <span>Kirim Sekarang 🚀</span>
+                    </button>
+                </form>
 
+                <!-- Feedback Message -->
+                <div id="freebie-message" class="hidden text-center text-xs font-bold p-3.5 rounded-2xl"></div>
+            </div>
+            
+            <!-- Information/Terms Card -->
+            <div class="bg-[#F0FEFA] rounded-3xl p-5 border border-emerald-100/50 premium-shadow space-y-3">
+                <h3 class="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Ketentuan Layanan Gratis
+                </h3>
+                <ul class="text-3xs text-emerald-700/95 space-y-1.5 list-disc pl-3">
+                    <li>Dibatasi 1x klaim per 24 jam untuk setiap IP Address dan browser.</li>
+                    <li>Proses pengiriman membutuhkan waktu maksimal 1x24 jam tergantung antrean.</li>
+                    <li>Dilarang mengubah username atau mem-private akun selama proses pengiriman berlangsung.</li>
+                </ul>
             </div>
         </div>
 
@@ -771,6 +779,124 @@
                 document.getElementById('view-testimonials').classList.add('active');
             }
         }
+
+        // --- FREEBIE CLAIM FORM FUNCTIONS ---
+        function toggleServiceSelection(input) {
+            document.querySelectorAll('.select-card').forEach(card => {
+                card.classList.remove('border-slate-800');
+                card.classList.add('border-slate-200');
+                card.querySelector('.inner-check').classList.add('hidden');
+            });
+            const label = input.closest('label');
+            if (label) {
+                label.classList.add('border-slate-800');
+                label.classList.remove('border-slate-200');
+                const innerCheck = label.querySelector('.inner-check');
+                if (innerCheck) innerCheck.classList.remove('hidden');
+            }
+            
+            // Update labels/placeholders
+            const targetLabel = document.getElementById('target-label');
+            const targetInput = document.getElementById('freebie-target');
+            const targetHelp = document.getElementById('target-help');
+            const targetIcon = document.getElementById('target-icon');
+            
+            if (!targetLabel || !targetInput) return;
+
+            if (input.value === 'instagram') {
+                targetLabel.textContent = 'Username Instagram';
+                targetInput.placeholder = 'Contoh: sebastianwirajaya11';
+                if (targetHelp) targetHelp.textContent = 'Pastikan akun tidak diprivate & username ditulis dengan benar.';
+                if (targetIcon) targetIcon.className = 'fa-brands fa-instagram text-xs';
+            } else {
+                targetLabel.textContent = 'Link Channel YouTube';
+                targetInput.placeholder = 'Contoh: https://youtube.com/@LinstoreChannel';
+                if (targetHelp) targetHelp.textContent = 'Pastikan jumlah subscribers tidak disembunyikan & link channel benar.';
+                if (targetIcon) targetIcon.className = 'fa-solid fa-link text-xs';
+            }
+        }
+
+        async function handleFreebieSubmit(event) {
+            event.preventDefault();
+            const form = document.getElementById('freebie-form');
+            const submitBtn = document.getElementById('freebie-submit-btn');
+            const messageDiv = document.getElementById('freebie-message');
+            const serviceInput = document.querySelector('input[name="service"]:checked');
+            const targetInput = document.getElementById('freebie-target');
+            
+            if (!serviceInput || !targetInput || !targetInput.value.trim()) return;
+            
+            const service = serviceInput.value;
+            const target = targetInput.value.trim();
+            
+            // LocalStorage check (pre-flight check)
+            const claimKey = `last_claim_${service}`;
+            const lastClaim = localStorage.getItem(claimKey);
+            if (lastClaim) {
+                const diff = Date.now() - parseInt(lastClaim);
+                const cooldown = 24 * 60 * 60 * 1000;
+                if (diff < cooldown) {
+                    const timeLeft = Math.ceil((cooldown - diff) / (60 * 60 * 1000));
+                    messageDiv.className = 'text-center text-xs font-bold p-3.5 rounded-2xl bg-amber-50 text-amber-700 border border-amber-100';
+                    messageDiv.textContent = `Kamu sudah mengklaim hari ini. Coba lagi dalam ${timeLeft} jam.`;
+                    messageDiv.classList.remove('hidden');
+                    return;
+                }
+            }
+            
+            // UI loading state
+            submitBtn.disabled = true;
+            const originalBtnHTML = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Memproses...</span>';
+            
+            messageDiv.classList.add('hidden');
+            
+            try {
+                const response = await fetch('/api/freebie', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ service, target })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    // Record claim in LocalStorage
+                    localStorage.setItem(claimKey, Date.now().toString());
+                    
+                    messageDiv.className = 'text-center text-xs font-bold p-3.5 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-100';
+                    messageDiv.textContent = data.message;
+                    form.reset();
+                    // Refresh check indicator visual
+                    const defaultRadio = document.querySelector('input[name="service"][value="instagram"]');
+                    if (defaultRadio) {
+                        defaultRadio.checked = true;
+                        toggleServiceSelection(defaultRadio);
+                    }
+                } else {
+                    messageDiv.className = 'text-center text-xs font-bold p-3.5 rounded-2xl bg-red-50 text-red-700 border border-red-100';
+                    messageDiv.textContent = data.message || 'Gagal mengirim pesanan. Silakan coba lagi.';
+                }
+            } catch (error) {
+                console.error('Request failed:', error);
+                messageDiv.className = 'text-center text-xs font-bold p-3.5 rounded-2xl bg-red-50 text-red-700 border border-red-100';
+                messageDiv.textContent = 'Gagal menghubungi server. Periksa koneksi internet Anda.';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHTML;
+                messageDiv.classList.remove('hidden');
+            }
+        }
+
+        // Initialize form layout visual on DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            const activeRadio = document.querySelector('input[name="service"]:checked');
+            if (activeRadio) {
+                toggleServiceSelection(activeRadio);
+            }
+        });
 
         // FAQ lokal — semua jawaban ada di halaman ini, tanpa API.
         const faqEntries = [
